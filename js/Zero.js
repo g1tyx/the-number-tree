@@ -61,7 +61,7 @@ addLayer("Z", {
         },
         6: {
             requirementDescription: "6 Zeros",
-            effectDescription: "Auto buy 5 and 7. Unlock trapper (not yet).",
+            effectDescription: "Auto buy 5 and 7. Unlock integer.",
             done() { return player.Z.points.gte(6) }        
         },
         },
