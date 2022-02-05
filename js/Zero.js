@@ -5,6 +5,8 @@ addLayer("Z", {
     startData() { return {
         unlocked: false,
 		points: new Decimal(0),
+        integer:[],
+        eff:[],
     }},
     color: "#534202",
     requires(){
@@ -67,4 +69,83 @@ addLayer("Z", {
         },
 
     layerShown(){return (hasMilestone("I",40000)&&player.X.points.gte(1))||player.Z.points.gte(1)},
-})
+    clickables:{       
+        11:{
+            display() {
+                if(player.Z.integer[0]==undefined) return ""
+                return (player.Z.integer[0]+"<br>"+player.Z.eff[0])},
+        },
+        12:{
+            display() {
+                if(player.Z.integer[1]==undefined) return ""
+                return (player.Z.integer[1]+"<br>"+player.Z.eff[1])},
+        },
+        31:{
+            display() {
+                if(player.Z.integer[2]==undefined) return ""
+                return (player.Z.integer[2]+"<br>"+player.Z.eff[2])},
+        },
+        32:{
+            display() {
+                if(player.Z.integer[3]==undefined) return ""
+                return (player.Z.integer[3]+"<br>"+player.Z.eff[3])},
+        },
+        101:{
+            display() {return "Delete the oldest integer."},
+            onClick(){
+                player.Z.integer=player.Z.integer.splice(1, 1)
+                setBuyableAmount("Z", 21, getBuyableAmount("Z", 21).sub(1))
+            },
+            canClick(){return getBuyableAmount("Z", 21).gte(1)}
+        },
+    },
+    buyables: {
+        rows: 2,
+        cols: 3,
+        21: {
+            title: "Random Integer",
+            display() {
+               return "Add 1 random integer <br>Cost : " + formatWhole(tmp.Z.buyables[21].cost) + " Zeros"
+            },
+            unlocked() { return hasMilestone("Z",6) },
+            canAfford() { 
+              return player.Z.points.gte(tmp.Z.buyables[21].cost) 
+            },
+            cost(){
+            return  new Decimal("2").pow(getBuyableAmount((this.layer), (this.id)).pow(0.95)).ceil()
+            },
+            buy() { 
+                {
+player.Z.integer.push(new Decimal(Math.random()).times(5).ceil().max(1))
+                   player.Z.points = player.Z.points.minus(tmp.Z.buyables[21].cost)
+                }
+                setBuyableAmount("Z", 21, getBuyableAmount("Z", 21).add(1))
+            },
+            effect() { 
+              return getBuyableAmount("Z", 21)       
+            },
+            purchaseLimit(){return 4}
+        },
+    },
+    update(diff){
+        for (let i = 0; i <=3 ; i++) {
+        switch(parseInt(player.Z.integer[i])){
+            case 1: player.Z.eff[i]="Point ^1.1";break
+            case 2: player.Z.eff[i]="Number ^1.05";break
+            case 3: player.Z.eff[i]="Factor x1.03";break
+            case 4: player.Z.eff[i]="Prime factor point ^1.02";break
+            case 5: player.Z.eff[i]="Point exp ^1.01";break
+            default: player.Z.eff[i]="";
+          }
+        }
+    }
+})  
+setInterval(function () {for (let i = 0; i <=3 ; i++) {
+    switch(parseInt(player.Z.integer[i])){
+        case 1: player.Z.eff[i]="Point ^1.1";break
+        case 2: player.Z.eff[i]="Number ^1.05";break
+        case 3: player.Z.eff[i]="Factor x1.03";break
+        case 4: player.Z.eff[i]="Prime factor point ^1.02";break
+        case 5: player.Z.eff[i]="Point exp ^1.01";break
+        default: player.Z.eff[i]="";
+}}}, 50);
