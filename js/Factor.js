@@ -53,6 +53,7 @@ addLayer("F", {
 gain=gain.times(player.FS.pfp.add(10).log(10).add(9).log(10))
 if(hasChallenge("UF",301))gain=gain.times(1.13)
 if(hasChallenge("UF",302))gain=gain.times(1.06)
+gain=gain.times(new Decimal(1.03).pow(player.Z.integer.filter(x => x == 3).length))
 return gain
     },
     branches:["N"],
@@ -865,6 +866,7 @@ return gain
         let keep = [];
         if (resettingLayer=="E") keep.push("milestones")
         if (hasMilestone("Z", 4) &&resettingLayer=="Z") keep.push("milestones")
+        if (hasMilestone("Z", 8) &&resettingLayer=="Z") keep.push("challenges")
         if (hasMilestone("I", 2) && resettingLayer=="I") keep.push("milestones")
         if (hasMilestone("I", 3) && resettingLayer=="I") keep.push("challenges")
         if (hasMilestone("IP", 1) && resettingLayer=="IP") keep.push("challenges")

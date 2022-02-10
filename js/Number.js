@@ -175,6 +175,7 @@ else if(hasUpgrade('N',24)&&player.X.points.gte(1)&&!inChallenge('UF',121))mult 
       if(inChallenge("UF",302))mult = mult.times(new Decimal(0.0001))
       if(inChallenge("I",72))mult=mult.times(new Decimal(0.8).pow(new Decimal(1).add(challengeCompletions("I",72))))
       mult=mult.times(player.FS.pfp.add(10).log(10).add(9).log(10))
+      mult=mult.times(new Decimal(1.05).pow(player.Z.integer.filter(x => x == 2).length))
       if(inChallenge("UF",211))mult = new Decimal(1)
       if(inChallenge("UF",212)||inChallenge("UF",301))mult = new Decimal(1).div(mult)
 

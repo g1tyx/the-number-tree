@@ -66,6 +66,18 @@ addLayer("Z", {
             effectDescription: "Auto buy 5 and 7. Unlock integer.",
             done() { return player.Z.points.gte(6) }        
         },
+        7: {
+            requirementDescription: "2 same integer",
+            effectDescription: "Auto buy 11 and factor shift. Unlock integer req formula is better.",
+            done() {for (let i=0; i<=3; i++){
+                if(player.Z.integer.filter(x => x == i).length>=2) return true
+                }}        
+        },
+        8: {
+            requirementDescription: "1e8 factors",
+            effectDescription: "Unlock one (req a integer 1) (not yet) and keep Factor challenge on reset.",
+            done(){return player.F.points.gte(1e8)}      
+        }, 
         },
 
     layerShown(){return (hasMilestone("I",40000)&&player.X.points.gte(1))||player.Z.points.gte(1)},
@@ -74,29 +86,47 @@ addLayer("Z", {
             display() {
                 if(player.Z.integer[0]==undefined) return ""
                 return (player.Z.integer[0]+"<br>"+player.Z.eff[0])},
+                canClick(){return player.Z.integer[0]==1},
+                onClick(){player.subtabs['Z'].mainTabs='One'},
+                unlocked() { return hasMilestone("Z",6)},
         },
         12:{
             display() {
                 if(player.Z.integer[1]==undefined) return ""
                 return (player.Z.integer[1]+"<br>"+player.Z.eff[1])},
+                unlocked() { return hasMilestone("Z",6)},
+                onClick(){player.subtabs['Z'].mainTabs='One'},
+                canClick(){return player.Z.integer[1]==1},
         },
         31:{
             display() {
                 if(player.Z.integer[2]==undefined) return ""
                 return (player.Z.integer[2]+"<br>"+player.Z.eff[2])},
+                unlocked() { return hasMilestone("Z",6)},
+                onClick(){player.subtabs['Z'].mainTabs='One'},
+                canClick(){return player.Z.integer[2]==1},
         },
         32:{
+
             display() {
                 if(player.Z.integer[3]==undefined) return ""
                 return (player.Z.integer[3]+"<br>"+player.Z.eff[3])},
+                unlocked() { return hasMilestone("Z",6)},
+                onClick(){player.subtabs['Z'].mainTabs='One'},
+                canClick(){return player.Z.integer[3]==1},
         },
         101:{
-            display() {return "Delete the oldest integer."},
+            display() {return "Delete the final integer."},
             onClick(){
-                player.Z.integer=player.Z.integer.splice(1, 1)
+                player.Z.integer.pop()
                 setBuyableAmount("Z", 21, getBuyableAmount("Z", 21).sub(1))
+                player.tab = "I"
+                setTimeout(function(){
+                    player.tab = "Z"
+                },50)
             },
-            canClick(){return getBuyableAmount("Z", 21).gte(1)}
+            canClick(){return new Decimal(player.Z.integer.length).gte(1)},
+            unlocked() { return hasMilestone("Z",6)},
         },
     },
     buyables: {
@@ -107,19 +137,25 @@ addLayer("Z", {
             display() {
                return "Add 1 random integer <br>Cost : " + formatWhole(tmp.Z.buyables[21].cost) + " Zeros"
             },
-            unlocked() { return hasMilestone("Z",6) },
+            unlocked() { return hasMilestone("Z",6)},
             canAfford() { 
               return player.Z.points.gte(tmp.Z.buyables[21].cost) 
             },
             cost(){
+                if(hasMilestone('Z',7)) return  new Decimal("1.5").pow(getBuyableAmount((this.layer), (this.id)).pow(1.1)).ceil()
             return  new Decimal("2").pow(getBuyableAmount((this.layer), (this.id)).pow(0.95)).ceil()
             },
             buy() { 
                 {
-player.Z.integer.push(new Decimal(Math.random()).times(5).ceil().max(1))
+player.Z.integer.push(new Decimal(Math.random()).times(4).ceil().max(1))
                    player.Z.points = player.Z.points.minus(tmp.Z.buyables[21].cost)
                 }
                 setBuyableAmount("Z", 21, getBuyableAmount("Z", 21).add(1))
+                player.tab = "I"
+                setTimeout(function(){
+                    player.tab = "Z"
+                },50)
+               
             },
             effect() { 
               return getBuyableAmount("Z", 21)       
@@ -134,18 +170,47 @@ player.Z.integer.push(new Decimal(Math.random()).times(5).ceil().max(1))
             case 2: player.Z.eff[i]="Number ^1.05";break
             case 3: player.Z.eff[i]="Factor x1.03";break
             case 4: player.Z.eff[i]="Prime factor point ^1.02";break
-            case 5: player.Z.eff[i]="Point exp ^1.01";break
             default: player.Z.eff[i]="";
           }
         }
-    }
+    },
+    tabFormat: {
+        "Milestones":{
+          content:[
+        "main-display",
+          "blank",
+        ["prestige-button",function(){return ""}],
+        "blank",
+        "resource-display",
+        "blank",
+        "blank",
+        "milestones",
+          ]},
+      
+      "Integer":{
+        unlocked(){return hasMilestone('Z',6)},
+        content:[
+          "main-display",
+          "blank",
+        ["prestige-button",function(){return ""}],
+          "blank",
+          "blank",
+          "clickables",
+          "blank",
+          "blank",
+          "buyables",
+       ],
+      },
+      "One":{
+        unlocked(){return false},
+        content:[
+          "main-display",
+          "blank",
+        ["prestige-button",function(){return ""}],
+          "blank",
+          "blank",
+          ["display-text",function(){return "never gonna"}]
+       ],
+      },
+    },
 })  
-setInterval(function () {for (let i = 0; i <=3 ; i++) {
-    switch(parseInt(player.Z.integer[i])){
-        case 1: player.Z.eff[i]="Point ^1.1";break
-        case 2: player.Z.eff[i]="Number ^1.05";break
-        case 3: player.Z.eff[i]="Factor x1.03";break
-        case 4: player.Z.eff[i]="Prime factor point ^1.02";break
-        case 5: player.Z.eff[i]="Point exp ^1.01";break
-        default: player.Z.eff[i]="";
-}}}, 50);

@@ -13,11 +13,15 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3.2",
+	num: "0.3.2.1 alpha 1",
 	name: "New layer",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<h3>v0.3.2.1 alpha 1</h3><br>
+- Added Integer.<br>
+- Added Guide (only after shape).<br>
+- Endgame: 1e8 Factors and 1 ???.<br>
 <h3>v0.3.2</h3><br>
 - Nothing here because I am lazy.<br>
 - Endgame: 6 Zeros and 1 ???.<br>
@@ -420,6 +424,7 @@ else	if(hasChallenge('UF',101)&&player.X.points.gte(1)&&!inChallenge("UF",221)) 
 	else if(hasUpgrade('UF',42)) exp = exp.times(player.IP.points.add(1).log(10).add(1).log(10).add(1).times(player.M.points.add(1)).times(player.F.points.add(1).log(10).add(1).log(10).add(1)).times(player.MS.points.add(1).pow(0.5)).add(10).log(10))
 if(inChallenge('UF',101)) exp = exp.times(0.25)
 if (hasMilestone('Z',2)) exp = exp.times(1.05)
+exp=exp.times(new Decimal(1.1).pow(player.Z.integer.filter(x => x == 1).length))
 	return exp
 }
 
@@ -453,7 +458,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.X.best.gte(1)&&player.Z.points.gte(6)
+	return player.X.best.gte(1)&&player.F.points.gte(1e8)
 }
 
 

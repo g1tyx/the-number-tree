@@ -43,7 +43,7 @@ addLayer("FS", {
         if(player.X.points.gte(1))  return hasMilestone('FS',1)  
         return hasMilestone('MS',1);
     },autoPrestige(){
-        return hasMilestone('MS',40);
+        return hasMilestone('MS',40)||hasMilestone('Z',7);
     },
     hotkeys: [
         {key: "F", description: "Shift + F: Reset for Factor shift", onPress(){if (canReset(this.layer)) doReset(this.layer)},
@@ -268,7 +268,7 @@ addLayer("FS", {
        mult=mult.times(new Decimal(1).add(challengeCompletions("I",82)).tetrate(1.75))
        if(hasMilestone("Z",1))mult=mult.times(10)
         player.FS.product=pro
-        player.FS.pfpgain=pro.times(mult)
+        player.FS.pfpgain=pro.times(mult).pow(new Decimal(1.03).pow(player.Z.integer.filter(x => x == 4).length))
     if(player.FS.points.gte(1)&&player.X.points.gte(1))   player.FS.pfp= player.FS.pfp.add(pro.times(mult).times(diff)).min(1e120)
 
     },
@@ -305,5 +305,9 @@ if(player.X.points.gte(1)) s+= "Your have "+format(player.FS.pfp)+" prime factor
       if(layers.FS.buyables[13].canAfford())setBuyableAmount("FS",13,getBuyableAmount("FS",13).add(1))   
     if(layers.FS.buyables[21].canAfford())setBuyableAmount("FS",21,getBuyableAmount("FS",21).add(1)) 
   }
+  if(hasMilestone("Z",7)){
+    if(layers.FS.buyables[22].canAfford())setBuyableAmount("FS",22,getBuyableAmount("FS",22).add(1))   
+ 
+}
 },
 })
