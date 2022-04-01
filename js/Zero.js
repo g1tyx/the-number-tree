@@ -76,7 +76,7 @@ addLayer("Z", {
         8: {
             requirementDescription: "1e8 factors",
             effectDescription: "Unlock one (req a integer 1) (not yet) and keep Factor challenge on reset.",
-            done(){return player.F.points.gte(1e8)&&player.x.points.gte(1)}      
+            done(){return player.F.points.gte(1e8)&&player.X.points.gte(1)}      
         }, 
         },
 
