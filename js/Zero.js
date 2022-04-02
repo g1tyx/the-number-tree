@@ -209,7 +209,7 @@ player.Z.integer.push(new Decimal(Math.random()).times(4).ceil().max(1))
         ["prestige-button",function(){return ""}],
           "blank",
           "blank",
-          ["display-text",function(){return "Never gonna give you up. Never gonna let you down."}]
+          ["display-text",function(){return "never gonna"}]
        ],
       },
     },
