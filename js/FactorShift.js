@@ -293,7 +293,7 @@ if(player.X.points.gte(1)) s+= "Your have "+format(player.FS.pfp)+" prime factor
     ],
     doReset(resettingLayer) {
       let keep = [];
-      keep.push("milestones")
+      if(player.FS.points.gte(1))keep.push("milestones")
       if (layers[resettingLayer].row > this.row) layerDataReset(this.layer, keep)
   },
   automateStuff(){
