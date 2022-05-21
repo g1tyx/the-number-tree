@@ -277,7 +277,7 @@ addLayer("I", {
                  return "Multiple prime factor point gain by "+format(new Decimal(1).add(challengeCompletions("I",72)).tetrate(2.25))+"<br> you can complete it "+challengeCompletions("I",72)+"/5 times"
               },
               completionLimit(){return new Decimal(5)},
-            unlocked(){return hasMilestone("F",12500)},
+            unlocked(){return hasMilestone("F",12500)&&player.X.points.gte(1)},
             },
             81: {
               name: "primee",
@@ -288,7 +288,7 @@ addLayer("I", {
                  return "Multiple prime factor point gain by "+format(new Decimal(1).add(challengeCompletions("I",81)).tetrate(2.15))+"<br> you can complete it "+challengeCompletions("I",81)+"/5 times"
               },
               completionLimit(){return new Decimal(5)},
-            unlocked(){return hasMilestone("F",12500)},
+            unlocked(){return hasMilestone("F",12500)&&player.X.points.gte(1)},
             },
             82: {
               name: "primegg",
@@ -299,7 +299,7 @@ addLayer("I", {
                  return "Multiple prime factor point gain by "+format(new Decimal(1).add(challengeCompletions("I",82)).tetrate(1.75))+"<br> you can complete it "+challengeCompletions("I",82)+"/5 times"
               },
               completionLimit(){return new Decimal(5)},
-            unlocked(){return hasMilestone("F",12500)},
+            unlocked(){return hasMilestone("F",12500)&&player.X.points.gte(1)},
             },
     },
     autoPrestige(){
