@@ -74,7 +74,7 @@ var cnItems = {
     "Raise O gain to 1.5.": "将 O 增益提高到 1.5。",
     "Remove the first hardcap of '+', auto buy Factors, and Factors resets nothing.": "删除“+”的第一个硬顶，自动购买因子，因子不会重置任何内容。",
     "Remove the second hardcap of '+'.": "删除“+”的第二个硬帽。",
-    "Save bank": "保存银行",
+    "Save bank": "存档银行",
     "Super Challenged": "超级挑战",
     "Super click": "超级点击",
     "Ten Upgrade": "十次升级",
