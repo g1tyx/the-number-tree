@@ -937,7 +937,7 @@ var cnRegReplace = new Map([
     [/^([\d\.]+) hours ([\d\.]+) minutes ([\d\.]+) seconds$/, '$1 小时 $2 分钟 $3 秒'],
     [/^You are gaining (.+) elves per second$/, '你每秒获得 $1 精灵'],
     [/^Your x is (.+)$/, '你的 x 是 $1'],
-    [/^Your y is (.+)$/, '你的 x 是 $1'],
+    [/^Your y is (.+)$/, '你的 y 是 $1'],
     [/^Number (.+) per click. Currently: (.+)$/, '数字 $1 每次点击。 当前：$2'],
     [/^you can complete it (.+) times$/, '你可以完成它 $1 次'],
     [/^Number \^(.+) but nerf factor beta.$/, '数字 \^$1 但 削弱 因子 beta。'],
