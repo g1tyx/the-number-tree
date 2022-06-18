@@ -353,7 +353,7 @@ addLayer("A", {
     name: "ω boost",
     tooltip:"Do ω once.",
     done()  {
-        if (challengeCompletions('O',11).gte(1))  return true
+        if (challengeCompletions('O',11)>=1)  return true
     },
     unlocked(){
         return hasMilestone('O',1)||hasMilestone('M',1)||player.X.points.gte(1)
