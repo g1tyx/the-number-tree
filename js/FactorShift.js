@@ -53,12 +53,20 @@ addLayer("FS", {
     ],
     row: 2, // Row the layer is in on the tree (0 is the first row)
     milestones: {
+      0: {
+        requirementDescription: "1 Factor shift",
+        effectDescription() {
+         return "Factor shift reset nothing and per factor shift (up to 5) unlock a prime factor."},
+        done() { return player.FS.points.gte(1)&&player.X.points.gte(1) },
+        unlocked() { return player.X.points.gte(1)}
+    },
+
         1: {
             requirementDescription: "1 Factor shift",
             effectDescription() {
-              if(player.X.points.gte(1))    return "Factor shift reset nothing and per factor shift (up to 5) unlock a prime factor."
-              else  return "Per factor shift make factor cheaper."},
-            done() { return player.FS.points.gte(1) }
+             return "Per factor shift make factor cheaper."},
+            done() { return player.FS.points.gte(1)&&!player.X.points.gte(1) },
+            unlocked() { return !player.X.points.gte(1)}
         },
         2: {
             requirementDescription: "2 Factor shift",
@@ -293,7 +301,8 @@ if(player.X.points.gte(1)) s+= "Your have "+format(player.FS.pfp)+" prime factor
     ],
     doReset(resettingLayer) {
       let keep = [];
-      if(player.FS.points.gte(1))keep.push("milestones")
+      if(hasMilestone("FS",0)&&player.X.points.gte(1))keep.push("milestones")
+      if(!player.X.points.gte(1)) keep.push("milestones")
       if (layers[resettingLayer].row > this.row) layerDataReset(this.layer, keep)
   },
   automateStuff(){

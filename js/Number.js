@@ -207,6 +207,7 @@ else if(hasUpgrade('N',24)&&player.X.points.gte(1)&&!inChallenge('UF',121))mult 
         if (hasChallenge("F", 21)||hasUpgrade("N", 24)||hasMilestone('I',1)&& resettingLayer=="F") keep.push("upgrades")
         if (hasMilestone("UF", 1) && resettingLayer=="UF")  keep.push("upgrades")
         if (hasMilestone("IP", 1) && resettingLayer=="IP")  keep.push("upgrades")
+
         keep.push("m1")
         keep.push("m2")
         keep.push("m3")
@@ -222,6 +223,7 @@ else if(hasUpgrade('N',24)&&player.X.points.gte(1)&&!inChallenge('UF',121))mult 
               player[this.layer].upgrades.push(extraUpgrades[i])
             }
           }
+          if (resettingLayer=="X")  player.N.upgrades=[]
     },
     upgrades: {
         11: {

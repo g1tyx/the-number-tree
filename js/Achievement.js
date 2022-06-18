@@ -340,7 +340,7 @@ addLayer("A", {
 },
 63:{
     name: "get Both",
-    tooltip:"Get 1 Ordinal  Mathematician.",
+    tooltip:"Get 1 Ordinal and Mathematician.",
     done()  {
         if (hasMilestone('M',1)&&hasMilestone('O',1))  return true
     },
@@ -353,7 +353,7 @@ addLayer("A", {
     name: "ω boost",
     tooltip:"Do ω once.",
     done()  {
-        if (hasMilestone('M',1)&&hasMilestone('O',1))  return true
+        if (challengeCompletions('O',11).gte(1))  return true
     },
     unlocked(){
         return hasMilestone('O',1)||hasMilestone('M',1)||player.X.points.gte(1)
@@ -380,7 +380,7 @@ addLayer("A", {
     }
 },
 67:{
-    name: "The greatest shapes",
+    name: "Yes, this is a layer to make you grind again",
     tooltip:"Get 1 shapes.",
     done()  {
         if (hasMilestone('S',1))  return true
