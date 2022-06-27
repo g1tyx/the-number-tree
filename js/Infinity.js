@@ -451,6 +451,7 @@ addLayer("G", {
    else if(player.E.meta.gte(1)) player.G.guide="Grind all type of point."
    else if(player.S.points.gte(4)) player.G.guide="Do omega for a lot of times. You can see meta tab in E layer when you reach 1.79e308 game speed."
    else if(player.S.points.gte(1)) player.G.guide="Grind shape."
-   else player.G.guide="."
+   else  if(hasUpgrade('UF',43))player.G.guide="Buy tickspeed and galaxy, also do E challenge"
+   else "Not implemented yet"
   }
 })

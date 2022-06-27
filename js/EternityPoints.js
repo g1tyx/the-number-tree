@@ -15,6 +15,7 @@ addLayer("E", {
         CPgettest:new Decimal(0),
         Nafterpow:new Decimal(0),
         meta:new Decimal(0),
+        ecnerfamt:new Decimal(0),
     }},
     position: -1,  
     canReset(){if(hasMilestone('E',22))  return player.N.points.gte("e9e15")
@@ -318,16 +319,15 @@ unlocked(){return hasMilestone('E',1e286)},
 
             11:{
                 display() {
-                    if(hasMilestone('E',1e40)) return "Number ^"+formatWhole(player.E.base11)+" per click. Currently: ^" +  format(player.E.Npower)
-                    else if(hasUpgrade('UF',92)) return "Number ^0.7 per click. Currently: ^" +  format(player.E.Npower)
-            else  return "Number ^0.5 per click. Currently: ^" +  format(player.E.Npower)},
+                    if(hasMilestone('E',1e40)) return "Number ^"+format(player.E.base11)+" per click. Currently: ^" +  formatSmall(player.E.Npower)
+                    else if(hasUpgrade('UF',92)) return "Number ^0.7 per click. Currently: ^" +  formatSmall(player.E.Npower)
+            else  return "Number ^0.5 per click. Currently: ^" +  formatSmall(player.E.Npower)},
 
                 canClick(){return (!inChallenge('E',11))},
                 onClick(){
-                    if(hasMilestone('E',1e40))  player.E.Npower = player.E.Npower.times(player.E.base11)
-                    else if(hasUpgrade('UF',92)) player.E.Npower = player.E.Npower.times(0.7)
-                    else  player.E.Npower = player.E.Npower.times(0.5)
-                player.E.CPget = player.E.CPget.add(1)},
+                player.E.CPget = player.E.CPget.add(1)
+                player.E.ecnerfamt=player.E.ecnerfamt.add(1)
+            },
                 unlocked(){return !hasMilestone('MS',4000)},
                 },
                
@@ -355,7 +355,7 @@ unlocked(){return hasMilestone('E',1e286)},
                     unlocked(){return !hasMilestone('MS',4000)},
                     canClick(){return true},
                     onClick(){
-                        player.E.Npower = new Decimal(1)
+                        player.E.ecnerfamt= new Decimal(0)
                         player.E.Ppower = new Decimal(1)
                         player.E.NNpower = new Decimal(1)
                         player.E.IPpower = new Decimal(1)
@@ -463,10 +463,7 @@ unlocked(){return hasMilestone('E',1e286)},
     
         if(hasMilestone('E',1e40)) player.E.base11 = player.E.points.add(1).log(10).add(1).log(10).add(1).log(10).add(0.35)
 
-        if(hasMilestone('O',100)&&hasChallenge('M',11)) player.E.CPget2= player.E.CPget.times(player.E.points.add(1).log(10).add(1).pow(0.3)).times(player.UF.mp.add(1).log(10).add(1).log(10).add(1)).times(player.O.points.add(1).log(10).add(1).pow(1.25))
-       else  if(hasChallenge('M',11)) player.E.CPget2= player.E.CPget.times(player.E.points.add(1).log(10).add(1).pow(0.3)).times(player.UF.mp.add(1).log(10).add(1).log(10).add(1))
-       else if(hasUpgrade('UF',91)) player.E.CPget2= player.E.CPget.times(player.E.points.add(1).log(10).add(1).pow(0.3))
-       else  player.E.CPget2= player.E.CPget
+      
        if(hasUpgrade('MS',83))  player.E.points = new  Decimal(0)
       else if(hasMilestone('O',369)&&player.N.points.gte("e9e15"))  player.E.points = player.E.points.plus((player.N.points.log(10).log(10).minus(15).pow(6)).times(player.E.CP.add(1).pow(player.E.boost)).times(5).times(upgradeEffect('E',14)).times(player.O.points.pow(3)).times(diff).times(1000).pow(1.25).times(100000000))
        else if(hasMilestone('E',1e41)&&player.N.points.gte("e9e15")) player.E.points = player.E.points.plus((player.N.points.log(10).log(10).minus(15).pow(6)).times(player.E.CP.add(1).pow(player.E.boost)).times(5).times(upgradeEffect('E',14)).times(player.O.points.pow(3)).times(diff).times(1000).pow(1.25))
@@ -481,6 +478,28 @@ unlocked(){return hasMilestone('E',1e286)},
           else if(hasUpgrade('UF',95))  player.E.CPgettest= player.N.points.add(1).log(2).add(1).log(2).add(1).times(player.E.points.add(1).log(9).add(1).pow(0.35)).times(player.UF.mp.add(1).log(8).add(1).log(8).add(1)).times(player.O.points.add(1).log(10).add(1).pow(1.5).times(tmp.O.effect))
   else if(hasMilestone('MS',4000)) player.E.CPgettest= player.N.points.add(1).log(2).add(1).log(2).add(1).times(player.E.points.add(1).log(9).add(1).pow(0.35)).times(player.UF.mp.add(1).log(8).add(1).log(8).add(1)).times(player.O.points.add(1).log(10).add(1).pow(1.5))
   if(hasMilestone('MS',4000)) player.E.CP = player.E.CPgettest
+
+
+
+
+
+
+
+
+  let nerf=new Decimal(0.5)
+  if(hasUpgrade('UF',92)) nerf=new Decimal(0.7)
+  if(hasMilestone('E',1e40)) nerf=player.E.base11
+  player.E.Npower=Decimal.pow(nerf,player.E.ecnerfamt)
+
+
+  let cp=new Decimal(0)
+  cp=player.E.ecnerfamt
+  if(player.E.IPpower==0)cp=cp.add(2)
+  if(player.E.NNpower==0)cp=cp.add(2)
+  if(hasUpgrade('UF',91)) cp=cp.times(player.E.points.add(1).log(10).add(1).pow(0.3))
+  if(hasChallenge('M',11)) cp=cp.times(player.UF.mp.add(1).log(10).add(1).log(10).add(1))
+  if(hasMilestone('O',100)) cp=cp.times(player.O.points.add(1).log(10).add(1).pow(1.25))
+  player.E.CPget2=cp
       },
 
     upgrades: {
