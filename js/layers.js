@@ -32,8 +32,6 @@ addLayer("n", {
             title:"-∞+∞i",
         cost(){return new Decimal(!hasUpgrade('n',51)?1/0:1e7)},
         description:"Unlock Addition.",
-        effect(){return player.n.points.add(10).log(10).pow(1.5)},
-        effectDisplay(){return format(upgradeEffect('n',13))+"x"},
         style(){
             if(hasUpgrade('n',51))return;
             return{"background-color":"#0f0f0f"}
