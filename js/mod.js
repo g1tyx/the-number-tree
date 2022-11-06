@@ -1,26 +1,27 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
-	author: "nobody",
+	name: "The Number Tree",
+	id: "汨屏河涼火",
+	author: "3^3=7#2252",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
+	initialStartPoints: new Decimal (0), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
+	num: "0.0.1",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+	<h3>v0.0.1</h3><br>
+		- Added 9 Number upgrades.<br>
+		- A easter egg hide in somewhere??<br>
+    `
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -43,6 +44,10 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if(hasUpgrade('n',33))gain=gain.times(4)
+	if(hasUpgrade('n',31))gain=gain.times(upgradeEffect('n',31))
+	if(hasUpgrade('n',53))gain=gain.times(upgradeEffect('n',53))
+	if(hasUpgrade('n',51))gain=gain.times(upgradeEffect('n',51))
 	return gain
 }
 
