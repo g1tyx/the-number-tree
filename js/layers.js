@@ -17,6 +17,7 @@ addLayer("n", {
         if(hasUpgrade('n',35))mult=mult.times(upgradeEffect('n',35))
         if(hasUpgrade('n',13))mult=mult.times(upgradeEffect('n',13))
         if(hasUpgrade('n',15))mult=mult.times(upgradeEffect('n',15))
+        if(hasMilestone('a',3))mult=mult.times(player.a.points.pow(0.5).add(1))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -63,7 +64,15 @@ addLayer("n", {
         },
         21:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
         22:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
-        23:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
+        23:{
+            title:"i",
+            cost(){return new Decimal(!hasMilestone('a',4)?1/0:1e10)},
+            description:"Number gain x4.",
+            style(){
+                if(hasMilestone('a',4))return;
+                return{"background-color":"#0f0f0f"}
+            },
+        },
         24:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
         25:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
         31:{
@@ -98,7 +107,15 @@ addLayer("n", {
         },
         41:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
         42:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
-        43:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
+        43:{
+            title:"-i",
+            cost(){return new Decimal(!hasMilestone('a',4)?1/0:1e11)},
+            description:"Point gain x4.",
+            style(){
+                if(hasMilestone('a',4))return;
+                return{"background-color":"#0f0f0f"}
+            },
+        },
         44:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
         45:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
         51:{
@@ -134,7 +151,103 @@ addLayer("n", {
             return{"background-color":"#0f0f0f"}
         },
         },
+    },
+    doReset(resettingLayer){
+        let keep = []
+        if(layers[resettingLayer].row<= this.row) return;
+        if (hasMilestone('a', 4)) keep.push("upgrades")
+        layerDataReset(this.layer, keep)  
     }
 })
-
+addLayer("a", {
+    symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    color: "#3782d3",
+    requires(){if(player.s.points.gte(1)&&!player.a.points.gte(1)) return new Decimal("1e14")
+    else return new Decimal("1e8")}, 
+    resource: "additions", // Name of prestige currency
+    baseResource: "numbers", // Name of resource prestige is based on
+    baseAmount() {return player.n.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already hav
+    base(){
+        return 4
+    },
+    exponent(){
+        if(player.a.points.gte(12)) return new Decimal(0.75).add(player.a.points.sub(11).times(0.05));
+        return 0.75
+    },
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        let mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "a", description: "A: Reset for additions", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return player.a.unlocked||player.s.unlocked||hasUpgrade('n',11)},
+    increaseUnlockOrder:['s'],
+    milestones: {
+        1: {
+            requirementDescription: "1 additions",
+            effectDescription: "Addition*2+1 boost point gain",
+            done() { return player.a.points.gte(1) },
+        },
+        2: {
+            requirementDescription: "2 additions",
+            effectDescription: "Per milestone double point gain.",
+            done() { return player.a.points.gte(2) },
+        },
+        3: {
+            requirementDescription: "3 additions",
+            effectDescription: "Addition^0.5+1 boost number gain.",
+            done() { return player.a.points.gte(3) },
+        },
+        4: {
+            requirementDescription: "5 additions",
+            effectDescription: "keep number upgrade, and unlock more.",
+            done() { return player.a.points.gte(5) },
+        },
+        5: {
+            requirementDescription: "8 additions",
+            effectDescription: "log(point+10) boost point gain.",
+            done() { return player.a.points.gte(8) },
+        },
+    },
+}),
+addLayer("s", {
+    symbol: "S", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    requires(){if(player.a.points.gte(1)&&!player.s.points.gte(1)) return new Decimal("1e15")
+    else return new Decimal("1e9")}, 
+    color: "#d36f5a",
+    resource: "Subtractions", // Name of prestige currency
+    baseResource: "points", // Name of resource prestige is based on
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already hav
+    base:4,
+    exponent: 1.25, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        let mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "s", description: "S: Reset for subtractions", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return player.a.unlocked||player.s.unlocked||hasUpgrade('n',55)},
+})
 function D(x){return new Decimal(x)}     
