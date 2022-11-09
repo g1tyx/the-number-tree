@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "The Number Tree",
-	id: "汨屏河涼火",
+	id: "NumberTree",
 	author: "3^3=7#2252",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
