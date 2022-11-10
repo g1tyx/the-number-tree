@@ -19,9 +19,9 @@ let VERSION = {
 
 let changelog = `<h1>Changelog:</h1><br>
 <h3>v0.0.3</h3><br>
-		- Added 5 Number upgrades.<br>
+		- Added 6 Number upgrades.<br>
 		- Balanced subtraction path<br>
-		- Endgame: 1e26-1e27 number (next upgrade will be 1e27 number, but there will be achievement to help you)<br>
+		- Endgame: 17 number upgrades<br>
     <h3>v0.0.2</h3><br>
 		- Added 2 Number upgrades.<br>
 		- Added Addition and subtraction. (only addition path balanced)<br>

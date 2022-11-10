@@ -22,9 +22,13 @@ addLayer("n", {
         if(hasMilestone('a',3))mult=mult.times(player.a.points.pow(0.5).add(1))
         if(hasMilestone('s',1))mult=mult.times(player.s.points.add(1))
         let s2ExMil=D(0)
-	if(hasMilestone('s',4))s2ExMil=s2ExMil.add(player.s.points.add(1).log(1.618).add(1))
+	    if(hasMilestone('s',4))s2ExMil=s2ExMil.add(player.s.points.add(1).log(1.618).add(1))
+        if(hasUpgrade('n',44))s2ExMil=s2ExMil.add(3)
         if(hasMilestone('s',2))mult=mult.times(D(1.5).pow(s2ExMil.add(player.s.milestones.length)))
         if(hasMilestone('s',3))mult=mult.times(player.n.points.add(10).log(10))
+        if(hasAchievement('ach',13))mult=mult.times(1.5)
+        if(hasAchievement('ach',14))mult=mult.times(1.5)
+        if(hasAchievement('ach',15))mult=mult.times(2)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -163,7 +167,15 @@ addLayer("n", {
                 return{"background-color":"#0f0f0f"}
             },
         },
-        44:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
+        44:{
+            title:"1+(-i)",
+            cost(){return new Decimal(!(player.a.unlocked&&player.s.unlocked)?1/0:1e27)},
+            description:"Get 3 subtraction milestones.",
+            style(){
+                if(player.a.unlocked&&player.s.unlocked)return;
+                return{"background-color":"#0f0f0f"}
+            },
+        },
         45:{style(){return{"background-color":"#0f0f0f"}},cost:new Decimal(1/0),},
         51:{
             title:"-∞+(-∞i)",
@@ -330,5 +342,58 @@ addLayer("s", {
     },
 
     layerShown(){return player.a.unlocked||player.s.unlocked||hasUpgrade('n',55)},
+})
+addLayer("ach", {
+    symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }}, 
+    requires:new Decimal(0),
+    color: "#38d2af",
+    resource: "Achievements", // Name of prestige currency
+    baseResource: "points", // Name of resource prestige is based on
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already hav
+    base:4,
+    exponent: 1.25, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        let mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: "side", // Row the layer is in on the tree (0 is the first row)
+    achievements: {
+        11: {
+            name: "The start",
+            tooltip:"Get an number.",
+            done(){return player.n.points.gte(1)}
+        },
+        12: {
+            name: "Infinite",
+            tooltip:"Get a infinity upgrade.",
+            done(){return hasUpgrade('n',35)}
+        },
+        13: {
+            name: "+",
+            tooltip:"Get an addition. Reward: number gain x1.5",
+            done(){return player.a.points.gte(1)}
+        },
+        14: {
+            name: "-",
+            tooltip:"Get a subtraction. Reward: number gain x1.5",
+            done(){return player.s.points.gte(1)}
+        },
+        15: {
+            name: "+-",
+            tooltip:"Get both addition and subtraction. Reward: number gain x2",
+            done(){return player.a.points.gte(1)&&player.s.points.gte(1)}
+        },
+    },
+
+    layerShown(){return true},
 })
 function D(x){return new Decimal(x)}     
