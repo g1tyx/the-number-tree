@@ -1,37 +1,26 @@
 let modInfo = {
-	name: "The Number Tree",
-	id: "NumberTree",
-	author: "3^3=7#2252",
+	name: "The ??? Tree",
+	id: "mymod",
+	author: "nobody",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (0), // Used for hard resets and new players
+	initialStartPoints: new Decimal (10), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.4",
-	name: "4 Nanothings",
+	num: "0.0",
+	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-<h3>v0.0.4</h3><br>
-- Endgame: Unlock both M and F. (only M path)<br>
-<h3>v0.0.3</h3><br>
-		- Added 6 Number upgrades.<br>
-		- Balanced subtraction path<br>
-		- Endgame: 17 number upgrades<br>
-    <h3>v0.0.2</h3><br>
-		- Added 2 Number upgrades.<br>
-		- Added Addition and subtraction. (only addition path balanced)<br>
-		- Endgame: Unlock both addition and subtraction. (only addition path)<br>
-	<h3>v0.0.1</h3><br>
-		- Added 9 Number upgrades.<br>
-		- A easter egg hide in somewhere??<br>
-    `
+	<h3>v0.0</h3><br>
+		- Added things.<br>
+		- Added stuff.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -54,20 +43,6 @@ function getPointGen() {
 		return new Decimal(0)
     if(inChallenge('m',11))return D(1)
 	let gain = new Decimal(1)
-	if(hasUpgrade('n',33))gain=gain.times(4)
-	if(hasUpgrade('n',43))gain=gain.times(4)
-	if(hasUpgrade('n',32))gain=gain.times(4)
-	if(hasUpgrade('n',31))gain=gain.times(upgradeEffect('n',31))
-	if(hasUpgrade('n',53))gain=gain.times(upgradeEffect('n',53))
-	if(hasUpgrade('n',51))gain=gain.times(upgradeEffect('n',51))
-	if(hasMilestone('a',1))gain=gain.times(player.a.points.times(2).add(1))
-	let a2ExMil=D(0)
-	if(hasMilestone('a',6))a2ExMil=a2ExMil.add(player.a.points.add(1).log(1.618).add(1))
-	if(hasUpgrade('n',22))a2ExMil=a2ExMil.add(3)
-	if(hasMilestone('a',2))gain=gain.times(D(2).pow(a2ExMil.add(player.a.milestones.length)))
-	if(hasMilestone('a',5))gain=gain.times(player.points.add(10).log(10).pow(hasMilestone('a',7)?2.5:1))
-	if(hasMilestone('s',1))gain=gain.times(2)
-	gain=gain.times(tmp.m.mpEff)
 	return gain
 }
 
